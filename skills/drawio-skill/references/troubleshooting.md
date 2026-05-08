@@ -23,3 +23,4 @@ Read this when something looks wrong in the output (rendering, export, layout, e
 | Background color wrong in CLI export | Known CLI bug; add `--transparent` flag or set background via style |
 | Vision returns 400 "Could not process image" on draft PNG | Re-export the preview without `-e` (issue #8). Root cause is a truncated IEND chunk in `-e` PNGs, not the `zTXt` chunk itself — but skipping `-e` for the preview is the simplest fix. |
 | Final `-e` PNG won't open in image viewers / vision APIs | Run `python3 <this-skill-dir>/scripts/repair_png.py <path>`. draw.io CLI emits `-e` PNGs with an 8-byte truncation at IEND. SVG/PDF unaffected. |
+| Windows: `Unable to move the cache: 拒绝访问` / `Gpu Cache Creation failed: -2` | Add `--disable-gpu` to the draw.io command. Example: `draw.io -x -f png -e -s 2 -o out.png in.drawio --disable-gpu` |

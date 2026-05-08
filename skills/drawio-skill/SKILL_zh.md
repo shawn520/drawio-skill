@@ -369,6 +369,9 @@ xvfb-run -a --server-args="-screen 0 1280x1024x24" \
   draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio --disable-gpu
 # 以 root 运行（CI / Docker）？在最后追加 --no-sandbox（放在前面会让 drawio 把它当作输入文件名）
 
+# Windows（--disable-gpu 避免 Chromium 缓存权限错误）
+"$DRAWIO" -x -f png -e -s 2 -o diagram.drawio.png input.drawio --disable-gpu
+
 # SVG 导出（最终 — -e 安全；SVG 是文本）
 draw.io -x -f svg -e -o diagram.svg input.drawio
 

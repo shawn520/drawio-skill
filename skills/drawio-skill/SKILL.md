@@ -369,6 +369,9 @@ xvfb-run -a --server-args="-screen 0 1280x1024x24" \
   draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio --disable-gpu
 # Running as root (CI / Docker)? Append --no-sandbox AT THE END (placing it earlier makes drawio treat it as the input filename)
 
+# Windows (--disable-gpu avoids Chromium cache permission errors)
+"$DRAWIO" -x -f png -e -s 2 -o diagram.drawio.png input.drawio --disable-gpu
+
 # SVG export (final — -e is safe; SVG is text)
 draw.io -x -f svg -e -o diagram.svg input.drawio
 
