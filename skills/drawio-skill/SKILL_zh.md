@@ -99,7 +99,7 @@ fi
 
 1. **检查依赖** — 验证 `draw.io --version` 成功；记录平台以使用正确 CLI 路径
 2. **规划** — 识别形状、关系、布局（LR 或 TB）、按层级分组
-3. **生成** — 将 `.drawio` XML 文件写入磁盘。默认输出目录是用户工作目录；如果用户指定了输出路径或目录（如 `./artifacts/`、`docs/images/`），使用那个 — 先 `mkdir -p` 目标目录。在步骤 4 和 7 的 PNG/SVG/PDF 导出中应用相同的目录选择。
+3. **生成** — 将 `.drawio` XML 文件写入磁盘。默认输出目录是 `docs/drawio/`（不存在则自动创建）；如果用户指定了输出路径或目录（如 `./artifacts/`、`docs/images/`），使用那个 — 先 `mkdir -p` 目标目录。在步骤 4 和 7 的 PNG/SVG/PDF 导出中应用相同的目录选择。
 4. **导出草稿** — 运行 CLI 生成预览 PNG。**此步不要传 `-e`** — 它添加的嵌入 `zTXt mxGraphModel` 块会导致 vision API（包括 Claude）在步骤 5 返回 400 "Could not process image"。将清洁预览保存为 `<name>.png`（单扩展名）。嵌入仅用于最终导出（步骤 7）。
 5. **自检** — 使用 agent 内置的 vision 能力读取导出的 PNG，在展示用户前捕获明显问题并自动修复（需要支持 vision 的模型如 Claude Sonnet/Opus）。如果读取 PNG 返回 400 / "Could not process image" 错误，几乎肯定是误用了 `-e` 导出 — 去掉 `-e` 重新导出并重试一次。如果仍然失败，跳过自检并继续步骤 6。
 6. **审核循环** — 向用户展示图片，收集反馈，应用精准的 XML 编辑，重新导出，重复直到批准

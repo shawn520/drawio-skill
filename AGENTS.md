@@ -48,12 +48,15 @@ evals/                   # 触发评估数据
    - 不修会导致图片查看器和 vision API 报错
 
 ```bash
-# 预览（Step 4）
-draw.io -x -f png -s 2 -o diagram.png input.drawio
+# 预览（Step 4）— 默认输出到 docs/drawio/
+mkdir -p docs/drawio
+draw.io -x -f png -s 2 -o docs/drawio/diagram.png input.drawio
 
 # 最终交付（Step 7）
-draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
-python3 skills/drawio-skill/scripts/repair_png.py diagram.drawio.png
+# 默认输出到 docs/drawio/；用户指定路径时使用用户路径
+mkdir -p docs/drawio
+draw.io -x -f png -e -s 2 -o docs/drawio/diagram.drawio.png input.drawio --disable-gpu
+python3 skills/drawio-skill/scripts/repair_png.py docs/drawio/diagram.drawio.png
 ```
 
 ## 自检与迭代循环
