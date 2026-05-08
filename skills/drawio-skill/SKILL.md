@@ -39,7 +39,7 @@ The draw.io desktop app must be installed and the CLI accessible:
 # Linux
 draw.io --version
 
-# Windows — auto-detect installation path
+# Windows (bash/git-bash) — auto-detect installation path
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
 elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
@@ -56,6 +56,32 @@ else
   echo "draw.io not found — please install from https://github.com/jgraph/drawio-desktop/releases"
 fi
 "$DRAWIO" --version
+```
+
+```powershell
+# Windows (PowerShell) — auto-detect installation path
+if (Get-Command draw.io -ErrorAction SilentlyContinue) {
+  $env:DRAWIO = "draw.io"
+}
+elseif (Test-Path "C:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "C:/Program Files (x86)/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files (x86)/draw.io/draw.io.exe"
+}
+elseif (Test-Path "$env:LOCALAPPDATA/draw.io/draw.io.exe") {
+  $env:DRAWIO = "$env:LOCALAPPDATA/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/opt/tool/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/opt/tool/draw.io/draw.io.exe"
+}
+else {
+  Write-Error "draw.io not found — please install from https://github.com/jgraph/drawio-desktop/releases"
+}
+& $env:DRAWIO --version
 ```
 
 Install draw.io desktop if missing:
@@ -429,11 +455,11 @@ When tools are unavailable, degrade gracefully:
 ### Checking if draw.io is in PATH
 
 ```bash
-# Linux — try short command first
+# Linux / git-bash — try short command first
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
 
-# Windows — auto-detect common installation paths
+# Windows (bash) — auto-detect common installation paths
 elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
   DRAWIO="C:/Program Files/draw.io/draw.io.exe"
 elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
@@ -447,6 +473,31 @@ elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
 else
   echo "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
 fi
+```
+
+```powershell
+# Windows (PowerShell) — auto-detect installation path
+if (Get-Command draw.io -ErrorAction SilentlyContinue) {
+  $env:DRAWIO = "draw.io"
+}
+elseif (Test-Path "C:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "C:/Program Files (x86)/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files (x86)/draw.io/draw.io.exe"
+}
+elseif (Test-Path "$env:LOCALAPPDATA/draw.io/draw.io.exe") {
+  $env:DRAWIO = "$env:LOCALAPPDATA/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/opt/tool/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/opt/tool/draw.io/draw.io.exe"
+}
+else {
+  Write-Error "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
+}
 ```
 
 ## Common Mistakes

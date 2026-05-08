@@ -39,7 +39,7 @@ PNG、SVG 和 PDF 导出支持 `--embed-diagram`（`-e`）— 导出的文件包
 # Linux
 draw.io --version
 
-# Windows — 自动检测安装路径
+# Windows (bash/git-bash) — 自动检测安装路径
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
 elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
@@ -56,6 +56,32 @@ else
   echo "未检测到 draw.io 应用，请先从 https://github.com/jgraph/drawio-desktop/releases 下载安装"
 fi
 "$DRAWIO" --version
+```
+
+```powershell
+# Windows (PowerShell) — 自动检测安装路径
+if (Get-Command draw.io -ErrorAction SilentlyContinue) {
+  $env:DRAWIO = "draw.io"
+}
+elseif (Test-Path "C:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "C:/Program Files (x86)/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files (x86)/draw.io/draw.io.exe"
+}
+elseif (Test-Path "$env:LOCALAPPDATA/draw.io/draw.io.exe") {
+  $env:DRAWIO = "$env:LOCALAPPDATA/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/opt/tool/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/opt/tool/draw.io/draw.io.exe"
+}
+else {
+  Write-Error "未检测到 draw.io 应用，请先从 https://github.com/jgraph/drawio-desktop/releases 下载安装"
+}
+& $env:DRAWIO --version
 ```
 
 缺少 draw.io 桌面应用时的安装方式：
@@ -429,11 +455,11 @@ python3 <this-skill-dir>/scripts/encode_drawio_url.py input.drawio
 ### 检查 draw.io 是否在 PATH 中
 
 ```bash
-# Linux — 先尝试短命令
+# Linux / git-bash — 先尝试短命令
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
 
-# Windows — 自动检测常见安装路径
+# Windows (bash) — 自动检测常见安装路径
 elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
   DRAWIO="C:/Program Files/draw.io/draw.io.exe"
 elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
@@ -447,6 +473,31 @@ elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
 else
   echo "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
 fi
+```
+
+```powershell
+# Windows (PowerShell) — 自动检测安装路径
+if (Get-Command draw.io -ErrorAction SilentlyContinue) {
+  $env:DRAWIO = "draw.io"
+}
+elseif (Test-Path "C:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "C:/Program Files (x86)/draw.io/draw.io.exe") {
+  $env:DRAWIO = "C:/Program Files (x86)/draw.io/draw.io.exe"
+}
+elseif (Test-Path "$env:LOCALAPPDATA/draw.io/draw.io.exe") {
+  $env:DRAWIO = "$env:LOCALAPPDATA/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/Program Files/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/Program Files/draw.io/draw.io.exe"
+}
+elseif (Test-Path "D:/opt/tool/draw.io/draw.io.exe") {
+  $env:DRAWIO = "D:/opt/tool/draw.io/draw.io.exe"
+}
+else {
+  Write-Error "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
+}
 ```
 
 ## 常见错误
