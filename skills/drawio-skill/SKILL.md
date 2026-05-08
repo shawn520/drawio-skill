@@ -45,7 +45,7 @@ draw.io --version
 /Applications/draw.io.app/Contents/MacOS/draw.io --version
 
 # Windows
-"C:\Program Files\draw.io\draw.io.exe" --version
+"D:\opt\tool\draw.io\draw.io.exe" --version
 
 # Linux
 draw.io --version
@@ -362,7 +362,7 @@ draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
 /Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
 
 # Windows
-"C:\Program Files\draw.io\draw.io.exe" -x -f png -e -s 2 -o diagram.drawio.png input.drawio
+"D:\opt\tool\draw.io\draw.io.exe" -x -f png -e -s 2 -o diagram.drawio.png input.drawio
 
 # Linux (headless — requires xvfb-run; on servers add HOME and --disable-gpu)
 export HOME=${HOME:-/tmp}
