@@ -36,24 +36,31 @@ When the workflow references one of these, read it on demand — none of them ne
 The draw.io desktop app must be installed and the CLI accessible:
 
 ```bash
-# macOS (Homebrew — recommended)
-brew install --cask drawio
-draw.io --version
-
-# macOS (full path if not in PATH)
-/Applications/draw.io.app/Contents/MacOS/draw.io --version
-
-# Windows
-"D:\opt\tool\draw.io\draw.io.exe" --version
-
 # Linux
 draw.io --version
+
+# Windows — auto-detect installation path
+if command -v draw.io &>/dev/null; then
+  DRAWIO="draw.io"
+elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files/draw.io/draw.io.exe"
+elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files (x86)/draw.io/draw.io.exe"
+elif [ -f "$LOCALAPPDATA/draw.io/draw.io.exe" ]; then
+  DRAWIO="$LOCALAPPDATA/draw.io/draw.io.exe"
+elif [ -f "D:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/Program Files/draw.io/draw.io.exe"
+elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/opt/tool/draw.io/draw.io.exe"
+else
+  echo "draw.io not found — please install from https://github.com/jgraph/drawio-desktop/releases"
+fi
+"$DRAWIO" --version
 ```
 
 Install draw.io desktop if missing:
-- macOS: `brew install --cask drawio` or download from https://github.com/jgraph/drawio-desktop/releases
-- Windows: download installer from https://github.com/jgraph/drawio-desktop/releases
 - Linux: download `.deb`/`.rpm` from https://github.com/jgraph/drawio-desktop/releases — **do not use snap** (AppArmor sandbox denies secrets/keyring on servers, causes crash)
+- Windows: download installer from https://github.com/jgraph/drawio-desktop/releases
 
 ## Workflow
 
@@ -356,13 +363,6 @@ draw.io -x -f png -s 2 -o diagram.png input.drawio
 # Final PNG (step 7, after user approval) — WITH -e, double extension
 draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
 
-# macOS — full path (if not in PATH); preview / final variants
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -s 2 -o diagram.png input.drawio
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
-
-# Windows
-"D:\opt\tool\draw.io\draw.io.exe" -x -f png -e -s 2 -o diagram.drawio.png input.drawio
-
 # Linux (headless — requires xvfb-run; on servers add HOME and --disable-gpu)
 export HOME=${HOME:-/tmp}
 xvfb-run -a --server-args="-screen 0 1280x1024x24" \
@@ -426,11 +426,21 @@ When tools are unavailable, degrade gracefully:
 ### Checking if draw.io is in PATH
 
 ```bash
-# Try short command first
+# Linux — try short command first
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
-elif [ -f "/Applications/draw.io.app/Contents/MacOS/draw.io" ]; then
-  DRAWIO="/Applications/draw.io.app/Contents/MacOS/draw.io"
+
+# Windows — auto-detect common installation paths
+elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files/draw.io/draw.io.exe"
+elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files (x86)/draw.io/draw.io.exe"
+elif [ -f "$LOCALAPPDATA/draw.io/draw.io.exe" ]; then
+  DRAWIO="$LOCALAPPDATA/draw.io/draw.io.exe"
+elif [ -f "D:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/Program Files/draw.io/draw.io.exe"
+elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/opt/tool/draw.io/draw.io.exe"
 else
   echo "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
 fi

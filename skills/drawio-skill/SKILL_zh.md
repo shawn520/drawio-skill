@@ -36,24 +36,31 @@ PNG、SVG 和 PDF 导出支持 `--embed-diagram`（`-e`）— 导出的文件包
 必须安装 draw.io 桌面应用且 CLI 可访问：
 
 ```bash
-# macOS（Homebrew — 推荐）
-brew install --cask drawio
-draw.io --version
-
-# macOS（完整路径，不在 PATH 时）
-/Applications/draw.io.app/Contents/MacOS/draw.io --version
-
-# Windows
-"D:\opt\tool\draw.io\draw.io.exe" --version
-
 # Linux
 draw.io --version
+
+# Windows — 自动检测安装路径
+if command -v draw.io &>/dev/null; then
+  DRAWIO="draw.io"
+elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files/draw.io/draw.io.exe"
+elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files (x86)/draw.io/draw.io.exe"
+elif [ -f "$LOCALAPPDATA/draw.io/draw.io.exe" ]; then
+  DRAWIO="$LOCALAPPDATA/draw.io/draw.io.exe"
+elif [ -f "D:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/Program Files/draw.io/draw.io.exe"
+elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/opt/tool/draw.io/draw.io.exe"
+else
+  echo "未检测到 draw.io 应用，请先从 https://github.com/jgraph/drawio-desktop/releases 下载安装"
+fi
+"$DRAWIO" --version
 ```
 
 缺少 draw.io 桌面应用时的安装方式：
-- macOS：`brew install --cask drawio` 或从 https://github.com/jgraph/drawio-desktop/releases 下载
-- Windows：从 https://github.com/jgraph/drawio-desktop/releases 下载安装程序
 - Linux：从 https://github.com/jgraph/drawio-desktop/releases 下载 `.deb`/`.rpm` — **不要用 snap**（AppArmor 沙盒会拒绝 secrets/keyring，导致服务器崩溃）
+- Windows：从 https://github.com/jgraph/drawio-desktop/releases 下载安装程序
 
 ## 工作流
 
@@ -356,13 +363,6 @@ draw.io -x -f png -s 2 -o diagram.png input.drawio
 # 最终 PNG（步骤 7，用户批准后）— 用 -e，双扩展名
 draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
 
-# macOS — 完整路径（不在 PATH 时）；预览 / 最终变体
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -s 2 -o diagram.png input.drawio
-/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -e -s 2 -o diagram.drawio.png input.drawio
-
-# Windows
-"D:\opt\tool\draw.io\draw.io.exe" -x -f png -e -s 2 -o diagram.drawio.png input.drawio
-
 # Linux（无头 — 需要 xvfb-run；服务器上加 HOME 和 --disable-gpu）
 export HOME=${HOME:-/tmp}
 xvfb-run -a --server-args="-screen 0 1280x1024x24" \
@@ -426,11 +426,21 @@ python3 <this-skill-dir>/scripts/encode_drawio_url.py input.drawio
 ### 检查 draw.io 是否在 PATH 中
 
 ```bash
-# 先尝试短命令
+# Linux — 先尝试短命令
 if command -v draw.io &>/dev/null; then
   DRAWIO="draw.io"
-elif [ -f "/Applications/draw.io.app/Contents/MacOS/draw.io" ]; then
-  DRAWIO="/Applications/draw.io.app/Contents/MacOS/draw.io"
+
+# Windows — 自动检测常见安装路径
+elif [ -f "C:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files/draw.io/draw.io.exe"
+elif [ -f "C:/Program Files (x86)/draw.io/draw.io.exe" ]; then
+  DRAWIO="C:/Program Files (x86)/draw.io/draw.io.exe"
+elif [ -f "$LOCALAPPDATA/draw.io/draw.io.exe" ]; then
+  DRAWIO="$LOCALAPPDATA/draw.io/draw.io.exe"
+elif [ -f "D:/Program Files/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/Program Files/draw.io/draw.io.exe"
+elif [ -f "D:/opt/tool/draw.io/draw.io.exe" ]; then
+  DRAWIO="D:/opt/tool/draw.io/draw.io.exe"
 else
   echo "draw.io not found — install from https://github.com/jgraph/drawio-desktop/releases"
 fi
